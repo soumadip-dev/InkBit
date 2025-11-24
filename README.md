@@ -1,5 +1,5 @@
 <h1 align="center">
-  EventFusion
+  EventFusion ✨
 </h1>
 
 <p align="center">

@@ -1,3 +1,4 @@
+import ExploreBtn from '@/components/ExploreBtn';
 import React from 'react';
 
 const Pnbbvage = () => {
@@ -7,6 +8,15 @@ const Pnbbvage = () => {
         The Hub for Every Dev <br /> Event You Can&apos;t Miss
       </h1>
       <p className="text-center mt-5">Hackathons, Webinars, Workshops, All in One Place</p>
+      <ExploreBtn />
+      <div className="mt-20 space-y-7">
+        <h3>Featured Events</h3>
+        <ul className="events">
+          {[1, 2, 3, 4, 5].map(event => (
+            <li key={event}>Event {event}</li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 };
