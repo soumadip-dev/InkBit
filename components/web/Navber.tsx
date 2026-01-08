@@ -10,7 +10,7 @@ const Navber = () => {
         {/* Logo */}
         <div className="flex items-center">
           <Link href="/">
-            <h1 className="text-lg font-semibold">
+            <h1 className="text-xl font-semibold">
               Ink<span className="text-blue-500">Bit</span>
             </h1>
           </Link>
