@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<h1 align="center">InkBit ✍️</h1>
 
-## Getting Started
+<p align="center">
+  A dynamic blog-sharing platform built with Next.js, featuring modern design, seamless publishing, and community engagement.
+</p>
 
-First, run the development server:
+<div align="center">
+  <img src="./public/banner.png" alt="Banner" width="900">
+</div
+
+---
+
+## 🔋 Features
+
+- 📝 **Rich text editor** with real-time collaboration and markdown support
+- 🔐 **Secure authentication** with Convex authentication and role-based permissions
+- ⚡ **Real-time updates** using Convex for instant content synchronization
+- 🎨 **Modern UI** built with Shadcn UI components and Tailwind CSS
+- 🚀 **Full-stack TypeScript** with end-to-end type safety
+- 📱 **Fully responsive** design for all devices
+- 🔍 **Advanced search** with filtering and tagging capabilities
+- 📊 **Analytics dashboard** for post performance tracking
+- 💾 **Draft management** with auto-save functionality
+- 🌙 **Dark/Light mode** with system preference detection
+
+## ⚙️ Tech Stack
+
+- **🎨 Frontend**: Next.js 16 (App Router), TypeScript, Tailwind CSS
+- **🛠 Backend & Database**: Convex (Backend as a Service)
+- **🎭 UI Components**: Shadcn UI, Radix UI Primitives
+- **📦 Package Manager**: Bun
+- **🔐 Authentication**: Convex Auth
+- **🎨 Icons**: Lucide React
+- **🔄 State Management**: Convex state management
+
+## 🤸 Installation
+
+### 1. Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/soumadip-dev/InkBit.git
+cd InkBit
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+bun install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Environment Setup
 
-## Learn More
+Create a `.env.local` file in the root directory with the following variables:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+CONVEX_DEPLOYMENT=<YOUR_CONVEX_DEPLOYMENT_NAME>
+NEXT_PUBLIC_CONVEX_URL=<YOUR_CONVEX_DEPLOYMENT_URL>
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Convex Setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Login to Convex
+bunx convex login
 
-## Deploy on Vercel
+# Deploy your Convex backend
+bunx convex dev
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Or deploy to production
+bunx convex deploy
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 5. Run the Application
+
+```bash
+# Development mode
+bun dev
+
+# Build for production
+bun build
+
+# Start production server
+bun start
+```
