@@ -10,10 +10,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useMutation } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
 import z from 'zod';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 export default function CreatePage() {
+  const createPost = useMutation(api.post.createPost);
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(blogSchema),
     defaultValues: {
@@ -25,8 +31,13 @@ export default function CreatePage() {
 
   const onSubmit = (data: z.infer<typeof blogSchema>) => {
     startTransition(async () => {
-      console.log(data);
+      await createPost({
+        title: data.title,
+        body: data.content,
+      });
     });
+    toast.success('EveryThing went well');
+    router.push('/');
   };
 
   return (
