@@ -12,14 +12,12 @@ import { useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
+import createBlogAction from '@/app/action';
 
 import z from 'zod';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 export default function CreatePage() {
-  const createPost = useMutation(api.post.createPost);
-  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(blogSchema),
     defaultValues: {
@@ -31,13 +29,9 @@ export default function CreatePage() {
 
   const onSubmit = (data: z.infer<typeof blogSchema>) => {
     startTransition(async () => {
-      await createPost({
-        title: data.title,
-        body: data.content,
-      });
+      await createBlogAction(data);
+      toast.success('Blog created successfully');
     });
-    toast.success('EveryThing went well');
-    router.push('/');
   };
 
   return (
