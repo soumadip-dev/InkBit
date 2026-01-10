@@ -18,7 +18,7 @@ const Navber = () => {
         <div className="flex items-center">
           <Link href="/">
             <h1 className="text-xl font-semibold">
-              Ink<span className="text-blue-500">Bit</span>
+              Ink<span className="text-primary">Bit</span>
             </h1>
           </Link>
         </div>

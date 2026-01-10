@@ -1,13 +1,14 @@
 'use server';
 
 import { api } from '@/convex/_generated/api';
-import { fetchMutation } from 'convex/nextjs';
+import { fetchMutation, fetchQuery } from 'convex/nextjs';
 import { blogSchema } from './schemas/blog';
 import z from 'zod';
 import { redirect } from 'next/navigation';
 import { getToken } from '@/lib/auth-server';
 
-export default async function createBlog(data: z.infer<typeof blogSchema>) {
+//* server action to create a blog post
+async function createBlogAction(data: z.infer<typeof blogSchema>) {
   const parsed = blogSchema.safeParse(data);
 
   if (!parsed.success) {
@@ -27,3 +28,12 @@ export default async function createBlog(data: z.infer<typeof blogSchema>) {
 
   return redirect('/');
 }
+
+//* server action to get all posts
+async function getPostsAction() {
+  const posts = await fetchQuery(api.post.getPosts);
+
+  return posts;
+}
+
+export { createBlogAction, getPostsAction };

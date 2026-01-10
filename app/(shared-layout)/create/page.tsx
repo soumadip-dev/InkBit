@@ -12,7 +12,7 @@ import { useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
-import createBlogAction from '@/app/action';
+import { createBlogAction } from '@/app/action';
 
 import z from 'zod';
 import { toast } from 'sonner';
