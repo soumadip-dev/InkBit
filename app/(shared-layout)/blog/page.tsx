@@ -26,6 +26,14 @@ export default function BlogPage() {
 }
 
 async function LoadBlogList() {
+  const renderContent = (html: string) => {
+    return (
+      <div
+        className="prose prose-lg dark:prose-invert max-w-none"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    );
+  };
   const posts = await getPostsAction();
   return (
     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 px-4 sm:px-6 lg:px-8">
@@ -48,7 +56,9 @@ async function LoadBlogList() {
                 {post.title}
               </h1>
             </Link>
-            <p className="text-muted-foreground line-clamp-3 mt-2">{post.body}</p>
+            <div className="text-muted-foreground line-clamp-3 mt-2">
+              {renderContent(post.body)}
+            </div>
           </CardContent>
           <CardFooter>
             <Link className={buttonVariants({ className: 'w-full' })} href={`/blog/${post._id}`}>

@@ -12,20 +12,20 @@
 
 ## 🔋 Features
 
-- 📝 **Rich text editor** with real-time collaboration and markdown support
-- 🔐 **Secure authentication** with Convex authentication and role-based permissions
-- ⚡ **Real-time updates** using Convex for instant content synchronization
-- 🎨 **Modern UI** built with Shadcn UI components and Tailwind CSS
+- 🔐 **Secure authentication** with Convex and role-based access
+- ⚡ **Real-time updates** for posts and comments
+- 📝 **Create blog posts** with image upload
+- 📚 **View all posts** and **single post pages**
+- 💬 **Create and view comments** per post
+- 🔍 **Search and filter** blog posts
+- 🎨 **Modern UI** using Shadcn UI and Tailwind CSS
+- 🌙 **Dark & Light mode** with system preference
+- 📱 **Fully responsive** on all devices
 - 🚀 **Full-stack TypeScript** with end-to-end type safety
-- 📱 **Fully responsive** design for all devices
-- 🔍 **Advanced search** with filtering and tagging capabilities
-- 📊 **Analytics dashboard** for post performance tracking
-- 💾 **Draft management** with auto-save functionality
-- 🌙 **Dark/Light mode** with system preference detection
 
 ## ⚙️ Tech Stack
 
-- **🎨 Frontend**: Next.js 16 (App Router), TypeScript, Tailwind CSS
+- **🎨 Frontend**: Next.js 16, TypeScript, Tailwind CSS
 - **🛠 Backend & Database**: Convex (Backend as a Service)
 - **🎭 UI Components**: Shadcn UI, Radix UI Primitives
 - **📦 Package Manager**: Bun

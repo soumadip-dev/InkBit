@@ -62,8 +62,10 @@ export const getPostById = query({
     if (!post) {
       throw new ConvexError('Post not found');
     }
-    const resolvedImageUrl =
-      post?.imageStorageId !== undefined ? await ctx.storage.getUrl(post.imageStorageId) : null;
+
+    const resolvedImageUrl = post.imageStorageId
+      ? await ctx.storage.getUrl(post.imageStorageId)
+      : null;
 
     return {
       ...post,
