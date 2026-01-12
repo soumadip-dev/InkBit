@@ -6,6 +6,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
+export const dynamic = 'force-static';
+export const revalidate = 30;
+
 export default function BlogPage() {
   return (
     <div className="py-12">
@@ -41,7 +44,7 @@ async function LoadBlogList() {
           </div>
           <CardContent className="flex-1">
             <Link href={`/blog/${post._id}`}>
-              <h1 className="text-2xl font-bold hover:text-primary transition-colors">
+              <h1 className="text-2xl font-bold hover:text-primary transition-colors truncate">
                 {post.title}
               </h1>
             </Link>

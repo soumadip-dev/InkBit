@@ -6,6 +6,7 @@ import { blogSchema } from './schemas/blog';
 import z from 'zod';
 import { redirect } from 'next/navigation';
 import { getToken } from '@/lib/auth-server';
+import { revalidatePath } from 'next/cache';
 
 //* server action to create a blog post
 async function createBlogAction(data: z.infer<typeof blogSchema>) {
@@ -40,6 +41,7 @@ async function createBlogAction(data: z.infer<typeof blogSchema>) {
       },
       { token }
     );
+    revalidatePath('/blog');
   } catch (error) {
     return {
       error: 'Failed to create post',
