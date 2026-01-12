@@ -44,65 +44,83 @@ export default function SignUpPage() {
       });
     });
   };
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Sign Up</CardTitle>
-        <CardDescription>Create an account to get started.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup className="gap-y-4">
-            <Controller
-              name="name"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field>
-                  <FieldLabel>Full name</FieldLabel>
-                  <Input aria-invalid={fieldState.invalid} placeholder="Full name" {...field} />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </Field>
-              )}
-            />
-            <Controller
-              name="email"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field>
-                  <FieldLabel>Email</FieldLabel>
-                  <Input aria-invalid={fieldState.invalid} placeholder="Email" {...field} />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </Field>
-              )}
-            />
-            <Controller
-              name="password"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field>
-                  <FieldLabel>Password</FieldLabel>
-                  <Input
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Password"
-                    {...field}
-                    type="password"
-                  />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </Field>
-              )}
-            />
-            <Button type="submit" className="cursor-pointer" disabled={isPending}>
-              {isPending ? (
-                <>
-                  <Loader2 className="size-4 animate-spin" /> Signing up...
-                </>
-              ) : (
-                'Sign up'
-              )}
-            </Button>
-          </FieldGroup>
-        </form>
-      </CardContent>
-    </Card>
+    <div className="py-12">
+      <div className="text-center mb-10">
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-3">Join Our Community</h1>
+        <p className="text-lg text-muted-foreground">Create your account to get started</p>
+      </div>
+      <Card className="w-full max-w-md mx-auto shadow-md">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl">Create Account</CardTitle>
+          <CardDescription>Fill in your details below</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FieldGroup className="space-y-4">
+              <Controller
+                name="name"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel className="font-medium">Full Name</FieldLabel>
+                    <Input
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Enter your full name"
+                      className="border-2 focus:border-primary"
+                      {...field}
+                    />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="email"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel className="font-medium">Email Address</FieldLabel>
+                    <Input
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Enter your email"
+                      className="border-2 focus:border-primary"
+                      {...field}
+                    />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="password"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel className="font-medium">Password</FieldLabel>
+                    <Input
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Create a password"
+                      className="border-2 focus:border-primary"
+                      {...field}
+                      type="password"
+                    />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Button type="submit" className="w-full cursor-pointer mt-2" disabled={isPending}>
+                {isPending ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin mr-2" /> Creating Account...
+                  </>
+                ) : (
+                  'Create Account'
+                )}
+              </Button>
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

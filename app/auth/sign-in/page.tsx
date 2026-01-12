@@ -42,49 +42,67 @@ export default function SignInPage() {
       });
     });
   };
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Sign In</CardTitle>
-        <CardDescription>Sign in to your account</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup className="gap-y-4">
-            <Controller
-              name="email"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field>
-                  <FieldLabel>Email</FieldLabel>
-                  <Input aria-invalid={fieldState.invalid} placeholder="Email" {...field} />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </Field>
-              )}
-            />
-            <Controller
-              name="password"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field>
-                  <FieldLabel>Password</FieldLabel>
-                  <Input aria-invalid={fieldState.invalid} placeholder="Password" {...field} />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </Field>
-              )}
-            />
-            <Button type="submit" className="cursor-pointer" disabled={isPending}>
-              {isPending ? (
-                <>
-                  <Loader2 className="size-4 animate-spin" /> Signing in...
-                </>
-              ) : (
-                'Sign In'
-              )}
-            </Button>
-          </FieldGroup>
-        </form>
-      </CardContent>
-    </Card>
+    <div className="py-12">
+      <div className="text-center mb-10">
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-3">Welcome Back</h1>
+        <p className="text-lg text-muted-foreground">Sign in to access your account</p>
+      </div>
+      <Card className="w-full max-w-md mx-auto shadow-md">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl">Sign In</CardTitle>
+          <CardDescription>Enter your credentials to continue</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FieldGroup className="space-y-4">
+              <Controller
+                name="email"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel className="font-medium">Email Address</FieldLabel>
+                    <Input
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Enter your email"
+                      className="border-2 focus:border-primary"
+                      {...field}
+                    />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="password"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel className="font-medium">Password</FieldLabel>
+                    <Input
+                      type="password"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Enter your password"
+                      className="border-2 focus:border-primary"
+                      {...field}
+                    />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Button type="submit" className="w-full cursor-pointer mt-2" disabled={isPending}>
+                {isPending ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin mr-2" /> Signing in...
+                  </>
+                ) : (
+                  'Sign In'
+                )}
+              </Button>
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

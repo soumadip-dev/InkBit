@@ -10,8 +10,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useMutation } from 'convex/react';
-import { api } from '@/convex/_generated/api';
 import { createBlogAction } from '@/app/action';
 
 import z from 'zod';
@@ -37,25 +35,34 @@ export default function CreatePage() {
 
   return (
     <div className="py-12">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Create Post</h1>
-        <p className="text-xl text-muted-foreground pt-4">Share your thoughts with the world</p>
+      <div className="text-center mb-10">
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-3">
+          Create Your Blog Post
+        </h1>
+        <p className="text-lg text-muted-foreground">
+          Share your thoughts and ideas with the community
+        </p>
       </div>
-      <Card className="w-full max-w-xl mx-auto">
-        <CardHeader>
-          <CardTitle>Create Blog Article</CardTitle>
-          <CardDescription>Create a new blog article</CardDescription>
+      <Card className="w-full max-w-xl mx-auto shadow-md">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl">New Blog Article</CardTitle>
+          <CardDescription>Fill in all required fields below</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FieldGroup className="gap-y-4">
+            <FieldGroup className="space-y-4">
               <Controller
                 name="title"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field>
-                    <FieldLabel>Title</FieldLabel>
-                    <Input aria-invalid={fieldState.invalid} placeholder="Title" {...field} />
+                    <FieldLabel className="font-medium">Title</FieldLabel>
+                    <Input
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Enter blog title"
+                      className="border-2 focus:border-primary"
+                      {...field}
+                    />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
@@ -65,10 +72,11 @@ export default function CreatePage() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field>
-                    <FieldLabel>Content</FieldLabel>
+                    <FieldLabel className="font-medium">Content</FieldLabel>
                     <Textarea
                       aria-invalid={fieldState.invalid}
-                      placeholder="Super cool blog content"
+                      placeholder="Write your content here"
+                      className="min-h-[150px] border-2 focus:border-primary"
                       {...field}
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -80,12 +88,12 @@ export default function CreatePage() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field>
-                    <FieldLabel>Image</FieldLabel>
+                    <FieldLabel className="font-medium">Image</FieldLabel>
                     <Input
                       type="file"
                       aria-invalid={fieldState.invalid}
-                      placeholder="Image"
                       accept="image/*"
+                      className="border-2 focus:border-primary"
                       onChange={event => {
                         const file = event.target.files?.[0];
                         if (file) {
@@ -97,13 +105,13 @@ export default function CreatePage() {
                   </Field>
                 )}
               />
-              <Button type="submit" className="cursor-pointer" disabled={isPending}>
+              <Button type="submit" className="w-full cursor-pointer mt-2" disabled={isPending}>
                 {isPending ? (
                   <>
-                    <Loader2 className="size-4 animate-spin" /> Submitting...
+                    <Loader2 className="size-4 animate-spin mr-2" /> Creating...
                   </>
                 ) : (
-                  'Submit'
+                  'Create Post'
                 )}
               </Button>
             </FieldGroup>

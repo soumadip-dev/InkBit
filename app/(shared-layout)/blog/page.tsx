@@ -9,9 +9,9 @@ import { Suspense } from 'react';
 export default function BlogPage() {
   return (
     <div className="py-12">
-      <div className="text-center pb-12">
-        <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Our Blog</h1>
-        <p className="pt-4 max-w-2xl mx-auto text-xl text-muted-foreground">
+      <div className="text-center mb-10">
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-3">Our Blog</h1>
+        <p className="text-lg text-muted-foreground">
           Insights, thoughts, and trends from our community
         </p>
       </div>
@@ -27,7 +27,7 @@ async function LoadBlogList() {
   return (
     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 px-4 sm:px-6 lg:px-8">
       {posts.map(post => (
-        <Card key={post._id} className="flex flex-col pt-0">
+        <Card key={post._id} className="flex flex-col pt-0 shadow-md">
           <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
             <Image
               src={
