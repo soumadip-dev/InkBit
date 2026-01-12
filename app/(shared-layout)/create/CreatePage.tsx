@@ -1,63 +1,50 @@
 'use client';
 
-import { signUpSchema } from '@/app/schemas/auth';
+import { blogSchema } from '@/app/schemas/blog';
 import { Button } from '@/components/ui/button';
-import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { authClient } from '@/lib/auth-client';
+import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
+import { useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { createBlogAction } from '@/app/action';
+
 import z from 'zod';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
-import { useTransition, useState } from 'react';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
-export default function SignUpPage() {
-  const [isPending, startTransition] = useTransition();
-  const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
+export default function CreatePage() {
   const form = useForm({
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(blogSchema),
     defaultValues: {
-      name: '',
-      email: '',
-      password: '',
+      title: '',
+      content: '',
+      image: undefined,
     },
   });
+  const [isPending, startTransition] = useTransition();
 
-  const onSubmit = (data: z.infer<typeof signUpSchema>) => {
+  const onSubmit = (data: z.infer<typeof blogSchema>) => {
     startTransition(async () => {
-      await authClient.signUp.email({
-        email: data.email,
-        name: data.name,
-        password: data.password,
-        fetchOptions: {
-          onSuccess: () => {
-            toast.success('Signed up successfully');
-            router.push('/');
-          },
-          onError: error => {
-            toast.error(error.error?.message);
-          },
-        },
-      });
+      await createBlogAction(data);
+      toast.success('Blog created successfully');
     });
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
   };
 
   return (
     <div className="py-12">
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-3">Join Our Community</h1>
-        <p className="text-lg text-muted-foreground">Create your account to get started</p>
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-3">
+          Create Your Blog Post
+        </h1>
+        <p className="text-lg text-muted-foreground">
+          Share your thoughts and ideas with the community
+        </p>
       </div>
 
-      <div className="relative mx-auto w-full max-w-md rounded-lg border border-dashed border-zinc-300 px-4 sm:px-6 md:px-8 dark:border-zinc-800 shadow-md">
+      <div className="relative mx-auto w-full max-w-xl rounded-lg border border-dashed border-zinc-300 px-4 sm:px-6 md:px-8 dark:border-zinc-800 shadow-md">
         <div className="absolute top-4 left-0 -z-0 h-px w-full bg-zinc-400 sm:top-6 md:top-8 dark:bg-zinc-700" />
         <div className="absolute bottom-4 left-0 z-0 h-px w-full bg-zinc-400 sm:bottom-6 md:bottom-8 dark:bg-zinc-700" />
 
@@ -65,11 +52,8 @@ export default function SignUpPage() {
           <div className="absolute z-0 grid h-full w-full items-center">
             <section className="absolute z-0 grid h-full w-full grid-cols-2 place-content-between">
               <div className="bg-primary my-4 size-1 -translate-x-[2.5px] rounded-full outline outline-8 outline-gray-50 sm:my-6 md:my-8 dark:outline-gray-950" />
-
               <div className="bg-primary my-4 size-1 translate-x-[2.5px] place-self-end rounded-full outline outline-8 outline-gray-50 sm:my-6 md:my-8 dark:outline-gray-950" />
-
               <div className="bg-primary my-4 size-1 -translate-x-[2.5px] rounded-full outline outline-8 outline-gray-50 sm:my-6 md:my-8 dark:outline-gray-950" />
-
               <div className="bg-primary my-4 size-1 translate-x-[2.5px] place-self-end rounded-full outline outline-8 outline-gray-50 sm:my-6 md:my-8 dark:outline-gray-950" />
             </section>
           </div>
@@ -77,21 +61,21 @@ export default function SignUpPage() {
           <div className="relative z-20 mx-auto py-8">
             <div className="p-6">
               <CardHeader className="pb-3 px-0">
-                <CardTitle className="text-xl">Create Account</CardTitle>
-                <CardDescription>Fill in your details below</CardDescription>
+                <CardTitle className="text-xl">New Blog Article</CardTitle>
+                <CardDescription>Fill in all required fields below</CardDescription>
               </CardHeader>
               <CardContent className="px-0">
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                   <FieldGroup>
                     <Controller
-                      name="name"
+                      name="title"
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field>
-                          <FieldLabel className="font-medium">Full Name</FieldLabel>
+                          <FieldLabel className="font-medium">Title</FieldLabel>
                           <Input
                             aria-invalid={fieldState.invalid}
-                            placeholder="Enter your full name"
+                            placeholder="Enter blog title"
                             className="border-2 focus:border-primary"
                             {...field}
                           />
@@ -100,15 +84,15 @@ export default function SignUpPage() {
                       )}
                     />
                     <Controller
-                      name="email"
+                      name="content"
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field>
-                          <FieldLabel className="font-medium">Email Address</FieldLabel>
-                          <Input
+                          <FieldLabel className="font-medium">Content</FieldLabel>
+                          <Textarea
                             aria-invalid={fieldState.invalid}
-                            placeholder="Enter your email"
-                            className="border-2 focus:border-primary"
+                            placeholder="Write your content here"
+                            className="min-h-[150px] border-2 focus:border-primary"
                             {...field}
                           />
                           {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -116,32 +100,23 @@ export default function SignUpPage() {
                       )}
                     />
                     <Controller
-                      name="password"
+                      name="image"
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field>
-                          <FieldLabel className="font-medium">Password</FieldLabel>
-                          <div className="relative">
-                            <Input
-                              type={showPassword ? 'text' : 'password'}
-                              aria-invalid={fieldState.invalid}
-                              placeholder="Create a password"
-                              className="border-2 focus:border-primary pr-10"
-                              {...field}
-                            />
-                            <button
-                              type="button"
-                              onClick={togglePasswordVisibility}
-                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 focus:outline-none"
-                              aria-label={showPassword ? 'Hide password' : 'Show password'}
-                            >
-                              {showPassword ? (
-                                <EyeOff className="h-4 w-4" />
-                              ) : (
-                                <Eye className="h-4 w-4" />
-                              )}
-                            </button>
-                          </div>
+                          <FieldLabel className="font-medium">Image</FieldLabel>
+                          <Input
+                            type="file"
+                            aria-invalid={fieldState.invalid}
+                            accept="image/*"
+                            className="border-2 focus:border-primary"
+                            onChange={event => {
+                              const file = event.target.files?.[0];
+                              if (file) {
+                                field.onChange(file);
+                              }
+                            }}
+                          />
                           {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                         </Field>
                       )}
@@ -153,22 +128,14 @@ export default function SignUpPage() {
                     >
                       {isPending ? (
                         <>
-                          <Loader2 className="size-4 animate-spin mr-2" /> Creating Account...
+                          <Loader2 className="size-4 animate-spin mr-2" /> Creating...
                         </>
                       ) : (
-                        'Create Account'
+                        'Create Post'
                       )}
                     </Button>
                   </FieldGroup>
                 </form>
-                <div className="text-center mt-4">
-                  <p className="text-sm text-muted-foreground">
-                    Already have an account?{' '}
-                    <a href="/auth/sign-in" className="text-primary hover:underline font-medium">
-                      Sign in
-                    </a>
-                  </p>
-                </div>
               </CardContent>
             </div>
           </div>

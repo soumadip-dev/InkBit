@@ -7,6 +7,7 @@ import z from 'zod';
 import { redirect } from 'next/navigation';
 import { getToken } from '@/lib/auth-server';
 import { revalidatePath } from 'next/cache';
+import { Id } from '@/convex/_generated/dataModel';
 
 //* server action to create a blog post
 async function createBlogAction(data: z.infer<typeof blogSchema>) {
@@ -58,4 +59,13 @@ async function getPostsAction() {
   return posts;
 }
 
-export { createBlogAction, getPostsAction };
+//* Server action to get single post by Id
+
+async function getPostByIdAction(postId: Id<'posts'>) {
+  const post = await fetchQuery(api.post.getPostById, {
+    postId,
+  });
+  return post;
+}
+
+export { createBlogAction, getPostsAction, getPostByIdAction };
