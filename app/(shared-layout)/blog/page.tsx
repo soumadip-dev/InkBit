@@ -23,7 +23,6 @@ export default function BlogPage() {
 }
 
 async function LoadBlogList() {
-  await new Promise(resolve => setTimeout(resolve, 500));
   const posts = await getPostsAction();
   return (
     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 px-4 sm:px-6 lg:px-8">
@@ -31,7 +30,10 @@ async function LoadBlogList() {
         <Card key={post._id} className="flex flex-col pt-0">
           <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
             <Image
-              src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmxvZ3xlbnwwfHwwfHx8MA%3D%3D"
+              src={
+                post.imageUrl ??
+                'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmxvZ3xlbnwwfHwwfHx8MA%3D%3D'
+              }
               alt=""
               fill
               className="object-cover"

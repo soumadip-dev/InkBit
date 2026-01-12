@@ -23,6 +23,7 @@ export default function CreatePage() {
     defaultValues: {
       title: '',
       content: '',
+      image: undefined,
     },
   });
   const [isPending, startTransition] = useTransition();
@@ -69,6 +70,28 @@ export default function CreatePage() {
                       aria-invalid={fieldState.invalid}
                       placeholder="Super cool blog content"
                       {...field}
+                    />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="image"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel>Image</FieldLabel>
+                    <Input
+                      type="file"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Image"
+                      accept="image/*"
+                      onChange={event => {
+                        const file = event.target.files?.[0];
+                        if (file) {
+                          field.onChange(file);
+                        }
+                      }}
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
