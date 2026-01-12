@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation';
 import { getToken } from '@/lib/auth-server';
 import { revalidatePath } from 'next/cache';
 import { Id } from '@/convex/_generated/dataModel';
+import { commentSchema } from './schemas/comment';
 
 //* server action to create a blog post
 async function createBlogAction(data: z.infer<typeof blogSchema>) {
@@ -60,7 +61,6 @@ async function getPostsAction() {
 }
 
 //* Server action to get single post by Id
-
 async function getPostByIdAction(postId: Id<'posts'>) {
   const post = await fetchQuery(api.post.getPostById, {
     postId,
@@ -68,4 +68,27 @@ async function getPostByIdAction(postId: Id<'posts'>) {
   return post;
 }
 
-export { createBlogAction, getPostsAction, getPostByIdAction };
+//* server action to create comment
+async function createCommentAction(data: z.infer<typeof commentSchema>) {
+  try {
+    const parsed = commentSchema.safeParse(data);
+
+    if (!parsed.success) {
+      throw new Error(parsed.error.message);
+    }
+
+    const token = await getToken();
+
+    await fetchMutation(
+      api.comments.createComment,
+      { postId: parsed.data.postId, body: parsed.data.body },
+      { token }
+    );
+  } catch (error) {
+    return {
+      error: 'Failed to create comment',
+    };
+  }
+}
+
+export { createBlogAction, getPostsAction, getPostByIdAction, createCommentAction };

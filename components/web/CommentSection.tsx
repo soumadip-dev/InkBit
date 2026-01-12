@@ -1,6 +1,6 @@
 'use client';
 
-import { MessageSquare } from 'lucide-react';
+import { Loader2, MessageSquare } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,6 +12,9 @@ import z from 'zod';
 import { useParams } from 'next/navigation';
 import { Id } from '@/convex/_generated/dataModel';
 
+import { createCommentAction } from '@/app/action';
+import { useTransition } from 'react';
+
 export const CommentSection = () => {
   const params = useParams<{ postId: Id<'posts'> }>();
   const form = useForm({
@@ -22,8 +25,12 @@ export const CommentSection = () => {
     },
   });
 
+  const [isPending, startTransition] = useTransition();
   const onSubmit = (data: z.infer<typeof commentSchema>) => {
-    console.log(data);
+    startTransition(async () => {
+      await createCommentAction(data);
+    });
+    form.reset();
   };
 
   return (
@@ -50,8 +57,14 @@ export const CommentSection = () => {
               </Field>
             )}
           />
-          <Button type="submit" className="w-full cursor-pointer">
-            Post Comment
+          <Button type="submit" className="w-full cursor-pointer" disabled={isPending}>
+            {isPending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Posting ..
+              </>
+            ) : (
+              'Post Comment'
+            )}
           </Button>
         </form>
       </CardContent>
