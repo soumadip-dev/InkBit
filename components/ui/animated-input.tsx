@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion, cubicBezier } from 'motion/react';
 import { useRef, useState, useId } from 'react';
 
 const EASE_IN_OUT_CUBIC_X1 = 0.4;
@@ -8,7 +8,12 @@ const EASE_IN_OUT_CUBIC_Y2 = 1;
 
 const LABEL_TRANSITION = {
   duration: 0.28,
-  ease: [EASE_IN_OUT_CUBIC_X1, EASE_IN_OUT_CUBIC_Y1, EASE_IN_OUT_CUBIC_X2, EASE_IN_OUT_CUBIC_Y2], // standard material easing
+  ease: cubicBezier(
+    EASE_IN_OUT_CUBIC_X1,
+    EASE_IN_OUT_CUBIC_Y1,
+    EASE_IN_OUT_CUBIC_X2,
+    EASE_IN_OUT_CUBIC_Y2
+  ),
 };
 
 export type AnimatedInputProps = {

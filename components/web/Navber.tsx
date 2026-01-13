@@ -173,35 +173,41 @@ const Navber = () => {
         </div>
       </div>
 
+      {/* Mobile Menu - Fixed height and proper stacking */}
       <div
         className={`md:hidden mobile-menu fixed inset-x-0 top-16 z-50 transition-all duration-300 ease-in-out ${
           isMenuOpen
             ? 'opacity-100 translate-y-0 visible'
             : 'opacity-0 -translate-y-4 invisible pointer-events-none'
         }`}
-        style={{
-          maxHeight: 'calc(100vh - 4rem)',
-          overflowY: 'auto',
-        }}
       >
-        <div className="border-b bg-background/95 backdrop-blur-lg supports-[backdrop-filter]:bg-background/95 shadow-lg">
-          <div className="container mx-auto px-4 py-3 space-y-1">
-            {/* Mobile Navigation Links */}
-            {navLinks.map(link => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={buttonVariants({
-                  variant: 'ghost',
-                  className:
-                    'w-full justify-start py-3 px-4 hover:bg-accent hover:text-accent-foreground transition-all duration-200',
-                })}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+        <div
+          className="border-b bg-background/95 backdrop-blur-lg supports-[backdrop-filter]:bg-background/95 shadow-lg"
+          style={{
+            maxHeight: 'calc(100vh - 4rem)',
+            overflowY: 'auto',
+          }}
+        >
+          <div className="container mx-auto px-4 py-3">
+            {/* Mobile Navigation Links - Stacked vertically */}
+            <div className="flex flex-col space-y-1">
+              {navLinks.map(link => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={buttonVariants({
+                    variant: 'ghost',
+                    className:
+                      'w-full justify-start py-3 px-4 hover:bg-accent hover:text-accent-foreground transition-all duration-200 text-left',
+                  })}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
 
+            {/* Authentication Section */}
             <div className="pt-3 border-t mt-3">
               {isLoading ? (
                 <div className="flex items-center justify-center py-3 px-4">
@@ -209,17 +215,7 @@ const Navber = () => {
                   <span className="text-sm text-muted-foreground">Loading...</span>
                 </div>
               ) : isAuthenticated ? (
-                <div className="space-y-2">
-                  <Link
-                    href="/dashboard"
-                    className={buttonVariants({
-                      variant: 'outline',
-                      className: 'w-full justify-start py-3 px-4 transition-all duration-200',
-                    })}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
+                <div className="flex flex-col space-y-2">
                   <Button
                     variant="outline"
                     className="w-full justify-start py-3 px-4 cursor-pointer border-border hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200"
@@ -229,12 +225,13 @@ const Navber = () => {
                   </Button>
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="flex flex-col space-y-2">
                   <Link
                     href="/auth/sign-in"
                     className={buttonVariants({
                       variant: 'outline',
-                      className: 'w-full justify-start py-3 px-4 transition-all duration-200',
+                      className:
+                        'w-full justify-start py-3 px-4 transition-all duration-200 text-center',
                     })}
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -244,7 +241,7 @@ const Navber = () => {
                     href="/auth/sign-up"
                     className={buttonVariants({
                       className:
-                        'w-full justify-start py-3 px-4 transition-all duration-200 hover:shadow-md',
+                        'w-full justify-start py-3 px-4 transition-all duration-200 hover:shadow-md text-center',
                     })}
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -256,6 +253,7 @@ const Navber = () => {
           </div>
         </div>
 
+        {/* Backdrop */}
         <div
           className={`fixed inset-0 bg-black/20 -z-10 transition-opacity duration-300 ${
             isMenuOpen ? 'opacity-100' : 'opacity-0'
