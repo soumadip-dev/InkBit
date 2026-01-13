@@ -119,6 +119,7 @@ const Navber = () => {
                 variant="outline"
                 size="sm"
                 className="cursor-pointer border-border hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200 px-4"
+                onClick={handleSignOut}
               >
                 Sign Out
               </Button>

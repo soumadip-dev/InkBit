@@ -1,18 +1,18 @@
 'use client';
 
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
+import { Field, FieldGroup } from '@/components/ui/field';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { signInSchema } from '@/app/schemas/auth';
 import { authClient } from '@/lib/auth-client';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import z from 'zod';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useTransition, useState } from 'react';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Mail, Lock } from 'lucide-react';
+import AnimatedInput from '@/components/ui/animated-input';
 
 export default function SignInPage() {
   const [isPending, startTransition] = useTransition();
@@ -80,20 +80,29 @@ export default function SignInPage() {
               </CardHeader>
               <CardContent className="px-0">
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                  <FieldGroup>
+                  <FieldGroup className="space-y-4">
                     <Controller
                       name="email"
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field>
-                          <FieldLabel className="font-medium">Email Address</FieldLabel>
-                          <Input
-                            aria-invalid={fieldState.invalid}
+                          <AnimatedInput
+                            label="Email Address"
                             placeholder="Enter your email"
-                            className="border-2 focus:border-primary"
-                            {...field}
+                            value={field.value}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            disabled={isPending}
+                            icon={<Mail className="h-4 w-4 text-gray-500" />}
+                            className="mt-1"
+                            inputClassName={`border-2 ${fieldState.invalid ? 'border-destructive focus:border-destructive' : 'border-input focus:border-primary focus:ring-primary'}`}
+                            labelClassName={`${fieldState.invalid ? 'text-destructive' : ''}`}
                           />
-                          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                          {fieldState.invalid && (
+                            <p className="text-sm text-destructive mt-1">
+                              {fieldState.error?.message}
+                            </p>
+                          )}
                         </Field>
                       )}
                     />
@@ -102,14 +111,19 @@ export default function SignInPage() {
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field>
-                          <FieldLabel className="font-medium">Password</FieldLabel>
                           <div className="relative">
-                            <Input
-                              type={showPassword ? 'text' : 'password'}
-                              aria-invalid={fieldState.invalid}
+                            <AnimatedInput
+                              label="Password"
                               placeholder="Enter your password"
-                              className="border-2 focus:border-primary pr-10"
-                              {...field}
+                              type={showPassword ? 'text' : 'password'}
+                              value={field.value}
+                              onChange={field.onChange}
+                              onBlur={field.onBlur}
+                              disabled={isPending}
+                              icon={<Lock className="h-4 w-4 text-gray-500" />}
+                              className="mt-1"
+                              inputClassName={`border-2 pr-10 ${fieldState.invalid ? 'border-destructive focus:border-destructive' : 'border-input focus:border-primary focus:ring-primary'}`}
+                              labelClassName={`${fieldState.invalid ? 'text-destructive' : ''}`}
                             />
                             <button
                               type="button"
@@ -124,7 +138,11 @@ export default function SignInPage() {
                               )}
                             </button>
                           </div>
-                          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                          {fieldState.invalid && (
+                            <p className="text-sm text-destructive mt-1">
+                              {fieldState.error?.message}
+                            </p>
+                          )}
                         </Field>
                       )}
                     />

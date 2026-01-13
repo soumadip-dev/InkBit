@@ -1,6 +1,40 @@
 import { redirect } from 'next/navigation';
 import { getToken } from '@/lib/auth-server';
 import CreatePage from './CreatePage';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Inkbit | Create',
+  description: 'Create a new blog post',
+  keywords: [
+    'Inkbit',
+    'Web Development',
+    'nature',
+    'JavaScript',
+    'Next.js',
+    'React',
+    'Programming',
+    'Soumadip Majila',
+    'Tech Articles',
+  ],
+  authors: [{ name: 'Soumadip Majila' }],
+  creator: 'Soumadip Majila',
+  publisher: 'Soumadip Majila',
+
+  category: 'Technology',
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+};
 
 export default async function Page() {
   const token = await getToken();

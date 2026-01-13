@@ -2,12 +2,49 @@ import { getPostsAction } from '@/app/action';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
 export const dynamic = 'force-static';
 export const revalidate = 30;
+
+export const metadata: Metadata = {
+  title: 'Inkbit | Blog',
+  description: 'Read in-depth articles, tutorials, and insights.',
+
+  keywords: [
+    'Inkbit',
+    'Blog',
+    'Web Development',
+    'nature',
+    'JavaScript',
+    'Next.js',
+    'React',
+    'Programming',
+    'Soumadip Majila',
+    'Tech Articles',
+  ],
+
+  authors: [{ name: 'Soumadip Majila' }],
+  creator: 'Soumadip Majila',
+  publisher: 'Soumadip Majila',
+
+  category: 'Technology',
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+};
 
 export default function BlogPage() {
   return (
