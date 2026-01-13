@@ -2,7 +2,7 @@ import CreatePage from './CreatePage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Inkbit | Create',
+  title: 'Create | Inkbit',
   description: 'Create a new blog post',
   keywords: [
     'Inkbit',
@@ -33,14 +33,14 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Inkbit | Create',
+    title: 'Create | Inkbit',
     description: 'Create a new blog post',
     type: 'website',
     locale: 'en_IN',
     siteName: 'Inkbit',
   },
   twitter: {
-    title: 'Inkbit | Create',
+    title: 'Create | Inkbit',
     description: 'Create a new blog post',
     card: 'summary_large_image',
     site: '@Inkbit',

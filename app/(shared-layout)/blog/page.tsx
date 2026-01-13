@@ -11,7 +11,7 @@ export const dynamic = 'force-static';
 export const revalidate = 30;
 
 export const metadata: Metadata = {
-  title: 'Inkbit | Blog',
+  title: 'Blog | Inkbit',
   description: 'Read in-depth articles, tutorials, and insights.',
 
   keywords: [
@@ -45,14 +45,14 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Inkbit | Blog',
+    title: 'Blog | Inkbit',
     description: 'Read in-depth articles, tutorials, and insights.',
     type: 'website',
     locale: 'en_IN',
     siteName: 'Inkbit',
   },
   twitter: {
-    title: 'Inkbit | Blog',
+    title: 'Blog | Inkbit',
     description: 'Read in-depth articles, tutorials, and insights.',
     card: 'summary_large_image',
     site: '@Inkbit',

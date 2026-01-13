@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PostIdRouteProps): Promise<Me
     };
   }
   return {
-    title: post.title,
+    title: `${post.title} | Inkbit`,
     description: post.body,
     openGraph: {
       title: post.title,

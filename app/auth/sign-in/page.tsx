@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import SignInForm from './SignInForm';
 
 export const metadata: Metadata = {
-  title: 'Inkbit | Sign In',
+  title: 'Sign In | Inkbit',
   description: 'Sign in to your account',
   keywords: ['Inkbit', 'Sign In', 'Account', 'Authentication'],
   authors: [{ name: 'Soumadip Majila' }],
@@ -21,14 +21,14 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Inkbit | Sign In',
+    title: 'Sign In | Inkbit',
     description: 'Sign in to your account',
     type: 'website',
     locale: 'en_IN',
     siteName: 'Inkbit',
   },
   twitter: {
-    title: 'Inkbit | Sign In',
+    title: 'Sign In | Inkbit',
     description: 'Sign in to your account',
     card: 'summary_large_image',
     site: '@Inkbit',

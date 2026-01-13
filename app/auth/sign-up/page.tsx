@@ -1,18 +1,18 @@
 import SignUpForm from './SignUpForm';
 
 export const metadata = {
-  title: 'Inkbit | Sign Up',
+  title: 'Sign Up | Inkbit',
   description: 'Sign up to your account',
   keywords: ['Inkbit', 'Sign Up', 'Sign In', 'Login', 'Register'],
   openGraph: {
-    title: 'Inkbit | Sign Up',
+    title: 'Sign Up | Inkbit',
     description: 'Sign up to your account',
     type: 'website',
     locale: 'en_IN',
     siteName: 'Inkbit',
   },
   twitter: {
-    title: 'Inkbit | Sign Up',
+    title: 'Sign Up | Inkbit',
     description: 'Sign up to your account',
     card: 'summary_large_image',
     site: '@Inkbit',
