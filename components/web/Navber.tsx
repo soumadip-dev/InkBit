@@ -115,14 +115,16 @@ const Navber = () => {
                 <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
               </div>
             ) : isAuthenticated ? (
-              <Button
-                variant="outline"
-                size="sm"
-                className="cursor-pointer border-border hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200 px-4"
-                onClick={handleSignOut}
-              >
-                Sign Out
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="cursor-pointer border-border hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200 px-4"
+                  onClick={handleSignOut}
+                >
+                  Sign Out
+                </Button>
+              </>
             ) : (
               <div className="flex items-center gap-2">
                 <Link
@@ -207,13 +209,25 @@ const Navber = () => {
                   <span className="text-sm text-muted-foreground">Loading...</span>
                 </div>
               ) : isAuthenticated ? (
-                <Button
-                  variant="outline"
-                  className="w-full justify-start py-3 px-4 cursor-pointer border-border hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200"
-                  onClick={handleSignOut}
-                >
-                  Sign Out
-                </Button>
+                <div className="space-y-2">
+                  <Link
+                    href="/dashboard"
+                    className={buttonVariants({
+                      variant: 'outline',
+                      className: 'w-full justify-start py-3 px-4 transition-all duration-200',
+                    })}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start py-3 px-4 cursor-pointer border-border hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200"
+                    onClick={handleSignOut}
+                  >
+                    Sign Out
+                  </Button>
+                </div>
               ) : (
                 <div className="space-y-2">
                   <Link

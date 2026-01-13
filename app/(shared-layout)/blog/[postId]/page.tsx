@@ -2,15 +2,15 @@ import { getPostByIdAction } from '@/app/action';
 import { buttonVariants } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { CommentSection } from '@/components/web/CommentSection';
+import PostPresence from '@/components/web/PostPresence';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
-import { preloadQuery } from 'convex/nextjs';
-import { ArrowLeft, Calendar } from 'lucide-react';
+import { getToken } from '@/lib/auth-server';
+import { fetchQuery, preloadQuery } from 'convex/nextjs';
+import { ArrowLeft, Calendar, Eye, Users } from 'lucide-react';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-
-export const dynamic = 'force-static';
 
 interface PostIdRouteProps {
   params: Promise<{
@@ -62,12 +62,14 @@ export async function generateMetadata({ params }: PostIdRouteProps): Promise<Me
 
 export default async function PostIdRoute({ params }: PostIdRouteProps) {
   const { postId } = await params;
+  const token = await getToken();
 
-  const [post, preloadedComments] = await Promise.all([
+  const [post, preloadedComments, userId] = await Promise.all([
     await getPostByIdAction(postId),
     await preloadQuery(api.comments.getCommentsByPost, {
       postId,
     }),
+    await fetchQuery(api.presence.getUserId, {}, { token }),
   ]);
 
   if (!post) {
@@ -79,26 +81,26 @@ export default async function PostIdRoute({ params }: PostIdRouteProps) {
   const renderContent = (html: string) => {
     return (
       <div
-        className="prose prose-lg dark:prose-invert max-w-none"
+        className="prose prose-lg dark:prose-invert max-w-none prose-headings:break-words prose-p:break-words prose-li:break-words prose-a:break-words"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     );
   };
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-4 animate-in fade-in duration-500">
+    <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8 animate-in fade-in duration-500">
       <Link
         href="/blog"
         className={buttonVariants({
           variant: 'ghost',
-          className: 'mb-6 gap-2 hover:bg-accent transition-colors',
+          className: 'mb-6 gap-2 hover:bg-accent transition-colors text-sm sm:text-base',
         })}
       >
         <ArrowLeft className="size-4" />
         Back to blog
       </Link>
 
-      <div className="relative w-full h-[400px] mb-8 rounded-xl overflow-hidden shadow-lg">
+      <div className="relative w-full h-[300px] sm:h-[350px] md:h-[400px] mb-6 sm:mb-8 rounded-lg sm:rounded-xl overflow-hidden shadow-lg">
         <Image
           src={
             post.imageUrl ||
@@ -108,15 +110,19 @@ export default async function PostIdRoute({ params }: PostIdRouteProps) {
           fill
           className="object-cover hover:scale-105 transition-transform duration-500"
           priority
-          sizes="(max-width: 768px) 100vw, 1200px"
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 90vw, (max-width: 1024px) 80vw, 1200px"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
       </div>
 
       <div className="space-y-4 mb-6">
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <Calendar className="size-4" />
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground break-words">
+          {post.title}
+        </h1>
+
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+          <div className="flex items-center gap-1.5 sm:gap-2 bg-muted/50 px-2.5 sm:px-1.5 py-3 sm:py-3 rounded-full">
+            <Calendar className="size-3.5 sm:size-4" />
             <span>
               {new Date(post._creationTime).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -125,18 +131,21 @@ export default async function PostIdRoute({ params }: PostIdRouteProps) {
               })}
             </span>
           </div>
-        </div>
 
-        <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-          {post.title}
-        </h1>
+          {userId && (
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-primary/10 text-primary px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full">
+              <Users className="size-3.5 sm:size-4" />
+              <PostPresence roomId={post._id} userId={userId} />
+            </div>
+          )}
+        </div>
       </div>
 
-      <Separator className="my-8" />
+      <Separator className="my-6 sm:my-8" />
 
-      <div className="blog-content">{renderContent(post.body)}</div>
+      <div className="blog-content px-0 sm:px-2">{renderContent(post.body)}</div>
 
-      <Separator className="my-8" />
+      <Separator className="my-6 sm:my-8" />
 
       <CommentSection preloadedComments={preloadedComments} />
     </div>
