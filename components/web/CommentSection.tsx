@@ -14,7 +14,7 @@ import { Id } from '@/convex/_generated/dataModel';
 
 import { createCommentAction } from '@/app/action';
 import { useTransition } from 'react';
-import { useQuery } from 'convex/react';
+import { Preloaded, usePreloadedQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { Avatar, AvatarImage } from '../ui/avatar';
 import { AvatarFallback } from '@radix-ui/react-avatar';
@@ -22,9 +22,11 @@ import { Separator } from '../ui/separator';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '../ui/skeleton';
 
-export const CommentSection = () => {
+export const CommentSection = (props: {
+  preloadedComments: Preloaded<typeof api.comments.getCommentsByPost>;
+}) => {
   const params = useParams<{ postId: Id<'posts'> }>();
-  const comments = useQuery(api.comments.getCommentsByPost, { postId: params.postId });
+  const comments = usePreloadedQuery(props.preloadedComments);
   const form = useForm({
     resolver: zodResolver(commentSchema),
     defaultValues: {
