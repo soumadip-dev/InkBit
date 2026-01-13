@@ -18,6 +18,7 @@
 - 📚 **View all posts** and **single post pages**
 - 💬 **Create and view comments** per post
 - 🔍 **Search and filter** blog posts
+- 👥 **Live user presence** tracking on blog posts
 - 🎨 **Modern UI** using Shadcn UI and Tailwind CSS
 - 🌙 **Dark & Light mode** with system preference
 - 📱 **Fully responsive** on all devices
