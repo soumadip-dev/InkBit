@@ -6,6 +6,7 @@ import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import { preloadQuery } from 'convex/nextjs';
 import { ArrowLeft, Calendar } from 'lucide-react';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -15,6 +16,48 @@ interface PostIdRouteProps {
   params: Promise<{
     postId: Id<'posts'>;
   }>;
+}
+
+export async function generateMetadata({ params }: PostIdRouteProps): Promise<Metadata> {
+  const { postId } = await params;
+
+  const post = await getPostByIdAction(postId);
+
+  if (!post) {
+    return {
+      title: 'Post not found',
+    };
+  }
+  return {
+    title: post.title,
+    description: post.body,
+    openGraph: {
+      title: post.title,
+      description: post.body,
+      type: 'website',
+      locale: 'en_IN',
+      siteName: 'Inkbit',
+    },
+    twitter: {
+      title: post.title,
+      description: post.body,
+      card: 'summary_large_image',
+      site: '@Inkbit',
+      creator: '@Inkbit',
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
+    authors: [{ name: 'Soumadip Majila' }],
+    creator: 'Soumadip Majila',
+    publisher: 'Soumadip Majila',
+    category: 'Technology',
+  };
 }
 
 export default async function PostIdRoute({ params }: PostIdRouteProps) {

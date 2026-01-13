@@ -44,6 +44,20 @@ export const metadata: Metadata = {
       'max-video-preview': -1,
     },
   },
+  openGraph: {
+    title: 'Inkbit | Blog',
+    description: 'Read in-depth articles, tutorials, and insights.',
+    type: 'website',
+    locale: 'en_IN',
+    siteName: 'Inkbit',
+  },
+  twitter: {
+    title: 'Inkbit | Blog',
+    description: 'Read in-depth articles, tutorials, and insights.',
+    card: 'summary_large_image',
+    site: '@Inkbit',
+    creator: '@Inkbit',
+  },
 };
 
 export default function BlogPage() {

@@ -34,6 +34,20 @@ export const metadata: Metadata = {
       'max-video-preview': -1,
     },
   },
+  openGraph: {
+    title: 'Inkbit | Create',
+    description: 'Create a new blog post',
+    type: 'website',
+    locale: 'en_IN',
+    siteName: 'Inkbit',
+  },
+  twitter: {
+    title: 'Inkbit | Create',
+    description: 'Create a new blog post',
+    card: 'summary_large_image',
+    site: '@Inkbit',
+    creator: '@Inkbit',
+  },
 };
 
 export default async function Page() {
