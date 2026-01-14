@@ -7,9 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-export const dynamic = 'force-static';
-export const revalidate = 30;
-
 export const metadata: Metadata = {
   title: 'Blog | Inkbit',
   description: 'Read in-depth articles, tutorials, and insights.',
