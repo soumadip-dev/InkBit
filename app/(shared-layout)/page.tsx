@@ -412,7 +412,7 @@ export default function Home() {
                     </div>
                   </div>
                   <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-light italic line-clamp-3">
-                    "{testimonial.content}"
+                    {testimonial.content}
                   </p>
                   <div className="flex items-center justify-between pt-3 sm:pt-4">
                     <div className="flex gap-1">

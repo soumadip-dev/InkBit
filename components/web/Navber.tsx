@@ -1,249 +1,245 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button, buttonVariants } from '../ui/button';
 import { ThemeToggle } from './theme-toggle';
 import { useConvexAuth } from 'convex/react';
 import { authClient } from '@/lib/auth-client';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { Loader2, Menu, X } from 'lucide-react';
+import { Loader2, Search, Menu, X } from 'lucide-react';
 
 const Navber = () => {
   const router = useRouter();
   const { isAuthenticated, isLoading } = useConvexAuth();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (isMenuOpen && !target.closest('.mobile-menu') && !target.closest('.hamburger-button')) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [isMenuOpen]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isMenuOpen]);
-
-  const handleSignOut = () => {
-    authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          toast.success('Signed out successfully');
-          router.push('/');
-          setIsMenuOpen(false);
-        },
-        onError: error => {
-          toast.error(error.error?.message);
-        },
-      },
-    });
-  };
-
-  const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/blog', label: 'Blog' },
-    { href: '/create', label: 'Create' },
-  ];
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav
-      className={`sticky top-0 z-50 w-full border-b transition-all duration-300 ${
-        isScrolled
-          ? 'bg-background/95 backdrop-blur-lg supports-[backdrop-filter]:bg-background/80 shadow-sm'
-          : 'bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/60'
-      }`}
-    >
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-        <div className="flex items-center flex-shrink-0 w-1/5 min-w-0">
-          <Link
-            href="/"
-            className="flex items-center space-x-2"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <h1 className="text-xl font-bold tracking-tight truncate">
+        <div className="flex items-center gap-4">
+          <Link href="/" className="flex items-center space-x-2">
+            <h1 className="text-xl font-bold tracking-tight">
               Ink<span className="text-primary">Bit</span>
             </h1>
           </Link>
+
+          {/* Desktop Navigation Links */}
+          <div className="hidden items-center gap-1 ml-6 md:flex">
+            <Link
+              href="/"
+              className={buttonVariants({
+                variant: 'ghost',
+                size: 'sm',
+                className: 'px-3 rounded-md hover:bg-accent transition-all duration-200',
+              })}
+            >
+              Home
+            </Link>
+            <Link
+              href="/blog"
+              className={buttonVariants({
+                variant: 'ghost',
+                size: 'sm',
+                className: 'px-3 rounded-md hover:bg-accent transition-all duration-200',
+              })}
+            >
+              Blog
+            </Link>
+            <Link
+              href="/create"
+              className={buttonVariants({
+                variant: 'ghost',
+                size: 'sm',
+                className: 'px-3 rounded-md hover:bg-accent transition-all duration-200',
+              })}
+            >
+              Create
+            </Link>
+          </div>
         </div>
 
-        <div className="hidden md:flex items-center justify-center flex-1 max-w-3xl mx-auto">
-          <div className="flex items-center gap-1 bg-muted/30 rounded-lg p-1">
-            {navLinks.map(link => (
+        {/* Desktop Right Section */}
+        <div className="hidden md:flex items-center gap-2">
+          {/* Search Box - Only shows when authenticated */}
+          {isAuthenticated && !isLoading && (
+            <div className="relative">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="search"
+                  placeholder="Search blog..."
+                  className="pl-9 pr-4 py-2 w-48 text-sm rounded-md border border-input bg-background shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  disabled
+                />
+              </div>
+            </div>
+          )}
+
+          {isLoading ? (
+            <div className="flex items-center justify-center px-4">
+              <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+            </div>
+          ) : isAuthenticated ? (
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="cursor-pointer border-border hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200"
+                onClick={() =>
+                  authClient.signOut({
+                    fetchOptions: {
+                      onSuccess: () => {
+                        toast.success('Signed out successfully');
+                        router.push('/');
+                      },
+                      onError: error => {
+                        toast.error(error.error?.message);
+                      },
+                    },
+                  })
+                }
+              >
+                Sign Out
+              </Button>
+            </div>
+          ) : (
+            <>
               <Link
-                key={link.href}
-                href={link.href}
+                href="/auth/sign-in"
                 className={buttonVariants({
                   variant: 'ghost',
                   size: 'sm',
-                  className:
-                    'px-4 rounded-md hover:bg-background hover:text-foreground transition-all duration-200 font-medium',
+                  className: 'px-3 rounded-md transition-all duration-200',
                 })}
               >
-                {link.label}
+                Sign In
               </Link>
-            ))}
+              <Link
+                href="/auth/sign-up"
+                className={buttonVariants({
+                  size: 'sm',
+                  className: 'px-4 rounded-md transition-all duration-200 hover:shadow-md',
+                })}
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
+          <div className="ml-2 border-l pl-2">
+            <ThemeToggle />
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 flex-shrink-0 w-1/5 min-w-0">
-          <div className="hidden md:flex items-center gap-2">
-            {isLoading ? (
-              <div className="flex items-center justify-center px-4">
-                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-              </div>
-            ) : isAuthenticated ? (
-              <>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="cursor-pointer border-border hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200 px-4"
-                  onClick={handleSignOut}
-                >
-                  Sign Out
-                </Button>
-              </>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Link
-                  href="/auth/sign-in"
-                  className={buttonVariants({
-                    variant: 'ghost',
-                    size: 'sm',
-                    className: 'px-4 rounded-md transition-all duration-200',
-                  })}
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/auth/sign-up"
-                  className={buttonVariants({
-                    size: 'sm',
-                    className: 'px-4 rounded-md transition-all duration-200 hover:shadow-md',
-                  })}
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
-            <div className="ml-2 border-l pl-2">
-              <ThemeToggle />
-            </div>
-          </div>
-
-          <div className="flex md:hidden items-center gap-2">
-            <div className="border-r pr-2">
-              <ThemeToggle />
-            </div>
+        {/* Mobile Menu Button and Icons */}
+        <div className="flex md:hidden items-center gap-2">
+          {/* Mobile Search Icon - Only shows when authenticated */}
+          {isAuthenticated && !isLoading && (
             <Button
               variant="ghost"
-              size="icon"
-              className="h-10 w-10 hamburger-button"
-              onClick={e => {
-                e.stopPropagation();
-                setIsMenuOpen(!isMenuOpen);
-              }}
-              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              size="sm"
+              className="p-2"
+              onClick={() => toast.info('Search functionality coming soon!')}
             >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              <Search className="h-4 w-4" />
             </Button>
+          )}
+
+          {/* Mobile Theme Toggle */}
+          <div className="border-r pr-2">
+            <ThemeToggle />
           </div>
+
+          {/* Mobile Menu Toggle */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="p-2"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
         </div>
       </div>
 
-      {/* Mobile Menu - Fixed height and proper stacking */}
-      <div
-        className={`md:hidden mobile-menu fixed inset-x-0 top-16 z-50 transition-all duration-300 ease-in-out ${
-          isMenuOpen
-            ? 'opacity-100 translate-y-0 visible'
-            : 'opacity-0 -translate-y-4 invisible pointer-events-none'
-        }`}
-      >
-        <div
-          className="border-b bg-background/95 backdrop-blur-lg supports-[backdrop-filter]:bg-background/95 shadow-lg"
-          style={{
-            maxHeight: 'calc(100vh - 4rem)',
-            overflowY: 'auto',
-          }}
-        >
-          <div className="container mx-auto px-4 py-3">
-            {/* Mobile Navigation Links - Stacked vertically */}
-            <div className="flex flex-col space-y-1">
-              {navLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={buttonVariants({
-                    variant: 'ghost',
-                    className:
-                      'w-full justify-start py-3 px-4 hover:bg-accent hover:text-accent-foreground transition-all duration-200 text-left',
-                  })}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden border-t bg-background animate-in slide-in-from-top-5 duration-300">
+          <div className="container mx-auto px-4 py-4 space-y-3">
+            {/* Mobile Navigation Links */}
+            <Link
+              href="/"
+              className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-accent transition-all duration-200 w-full"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              href="/blog"
+              className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-accent transition-all duration-200 w-full"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Blog
+            </Link>
+            <Link
+              href="/create"
+              className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-accent transition-all duration-200 w-full"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Create
+            </Link>
 
-            {/* Authentication Section */}
-            <div className="pt-3 border-t mt-3">
+            {/* Mobile Auth Buttons */}
+            <div className="pt-4 border-t">
               {isLoading ? (
-                <div className="flex items-center justify-center py-3 px-4">
-                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground mr-2" />
-                  <span className="text-sm text-muted-foreground">Loading...</span>
+                <div className="flex items-center justify-center py-2">
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
                 </div>
               ) : isAuthenticated ? (
-                <div className="flex flex-col space-y-2">
+                <div className="space-y-2">
                   <Button
                     variant="outline"
-                    className="w-full justify-start py-3 px-4 cursor-pointer border-border hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200"
-                    onClick={handleSignOut}
+                    size="sm"
+                    className="w-full cursor-pointer border-border hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200"
+                    onClick={() => {
+                      authClient.signOut({
+                        fetchOptions: {
+                          onSuccess: () => {
+                            toast.success('Signed out successfully');
+                            router.push('/');
+                            setIsMobileMenuOpen(false);
+                          },
+                          onError: error => {
+                            toast.error(error.error?.message);
+                          },
+                        },
+                      });
+                    }}
                   >
                     Sign Out
                   </Button>
                 </div>
               ) : (
-                <div className="flex flex-col space-y-2">
+                <div className="space-y-2">
                   <Link
                     href="/auth/sign-in"
                     className={buttonVariants({
                       variant: 'outline',
-                      className:
-                        'w-full justify-start py-3 px-4 transition-all duration-200 text-center',
+                      size: 'sm',
+                      className: 'w-full rounded-md transition-all duration-200',
                     })}
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/auth/sign-up"
                     className={buttonVariants({
-                      className:
-                        'w-full justify-start py-3 px-4 transition-all duration-200 hover:shadow-md text-center',
+                      size: 'sm',
+                      className: 'w-full rounded-md transition-all duration-200 hover:shadow-md',
                     })}
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Sign Up
                   </Link>
@@ -252,15 +248,7 @@ const Navber = () => {
             </div>
           </div>
         </div>
-
-        {/* Backdrop */}
-        <div
-          className={`fixed inset-0 bg-black/20 -z-10 transition-opacity duration-300 ${
-            isMenuOpen ? 'opacity-100' : 'opacity-0'
-          }`}
-          onClick={() => setIsMenuOpen(false)}
-        />
-      </div>
+      )}
     </nav>
   );
 };
