@@ -75,7 +75,8 @@ export const getPostById = query({
   },
 });
 
-interface searchPostResult {
+interface SearchPostResult {
+ 
   _id: string;
   title: string;
   body: string;
@@ -88,7 +89,7 @@ export const searchPosts = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit;
-    const results: searchPostResult[] = [];
+    const results: SearchPostResult[] = [];
     const seen = new Set<string>();
 
     const pushDocs = async (docs: Array<Doc<'posts'>>) => {

@@ -9,11 +9,13 @@ import { authClient } from '@/lib/auth-client';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Loader2, Search, Menu, X } from 'lucide-react';
+import { SearchInput } from './SearchInput';
 
 const Navber = () => {
   const router = useRouter();
   const { isAuthenticated, isLoading } = useConvexAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -60,19 +62,7 @@ const Navber = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-2">
-          {isAuthenticated && !isLoading && (
-            <div className="relative">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  type="search"
-                  placeholder="Search blog..."
-                  className="pl-9 pr-4 py-2 w-48 text-sm rounded-md border border-input bg-background shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  disabled
-                />
-              </div>
-            </div>
-          )}
+          {isAuthenticated && !isLoading && <SearchInput />}
 
           {isLoading ? (
             <div className="flex items-center justify-center px-4">
@@ -131,34 +121,68 @@ const Navber = () => {
 
         <div className="flex md:hidden items-center gap-2">
           {isAuthenticated && !isLoading && (
+            <>
+              {showMobileSearch && (
+                <div className="flex-1 mr-2">
+                  <SearchInput mobile />
+                </div>
+              )}
+            </>
+          )}
+
+          {showMobileSearch && (
             <Button
               variant="ghost"
               size="sm"
               className="p-2"
-              onClick={() => toast.info('Search functionality coming soon!')}
+              onClick={() => setShowMobileSearch(false)}
             >
-              <Search className="h-4 w-4" />
+              <X className="h-4 w-4" />
             </Button>
           )}
 
-          <div className="border-r pr-2">
-            <ThemeToggle />
-          </div>
+          {!showMobileSearch && (
+            <>
+              <div className="border-r pr-2">
+                <ThemeToggle />
+              </div>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            className="p-2"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="p-2"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            </>
+          )}
         </div>
       </div>
 
+      {/* Mobile search bar when toggled */}
+      {showMobileSearch && (
+        <div className="md:hidden border-t bg-background px-4 py-3">
+          <div className="flex items-center gap-2">
+            <SearchInput mobile />
+            <Button
+              variant="ghost"
+              size="sm"
+              className="p-2"
+              onClick={() => setShowMobileSearch(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden border-t bg-background animate-in slide-in-from-top-5 duration-300">
           <div className="container mx-auto px-4 py-4 space-y-3">
+            <div className="mb-4">{isAuthenticated && !isLoading && <SearchInput mobile />}</div>
+
             <Link
               href="/"
               className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-accent transition-all duration-200 w-full"
@@ -181,7 +205,6 @@ const Navber = () => {
               Create
             </Link>
 
-            {/* Mobile Auth Buttons */}
             <div className="pt-4 border-t">
               {isLoading ? (
                 <div className="flex items-center justify-center py-2">
