@@ -25,7 +25,6 @@ const Navber = () => {
             </h1>
           </Link>
 
-          {/* Desktop Navigation Links */}
           <div className="hidden items-center gap-1 ml-6 md:flex">
             <Link
               href="/"
@@ -60,9 +59,7 @@ const Navber = () => {
           </div>
         </div>
 
-        {/* Desktop Right Section */}
         <div className="hidden md:flex items-center gap-2">
-          {/* Search Box - Only shows when authenticated */}
           {isAuthenticated && !isLoading && (
             <div className="relative">
               <div className="relative">
@@ -132,9 +129,7 @@ const Navber = () => {
           </div>
         </div>
 
-        {/* Mobile Menu Button and Icons */}
         <div className="flex md:hidden items-center gap-2">
-          {/* Mobile Search Icon - Only shows when authenticated */}
           {isAuthenticated && !isLoading && (
             <Button
               variant="ghost"
@@ -146,12 +141,10 @@ const Navber = () => {
             </Button>
           )}
 
-          {/* Mobile Theme Toggle */}
           <div className="border-r pr-2">
             <ThemeToggle />
           </div>
 
-          {/* Mobile Menu Toggle */}
           <Button
             variant="ghost"
             size="sm"
@@ -163,11 +156,9 @@ const Navber = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
         <div className="md:hidden border-t bg-background animate-in slide-in-from-top-5 duration-300">
           <div className="container mx-auto px-4 py-4 space-y-3">
-            {/* Mobile Navigation Links */}
             <Link
               href="/"
               className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-accent transition-all duration-200 w-full"
