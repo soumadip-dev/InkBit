@@ -84,3 +84,5 @@ bun build
 # Start production server
 bun start
 ```
+
+Open [http://localhost:3000](http://localhost:3000) to explore the InkBit blog-sharing platform in action.
